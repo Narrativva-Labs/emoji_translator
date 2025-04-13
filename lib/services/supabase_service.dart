@@ -9,4 +9,3 @@ Future<void> incrementTranslationCount() async {
 Future<void> voteBest(String modelName) async {
   // TODO: Call Supabase to record vote for best model
 }
-

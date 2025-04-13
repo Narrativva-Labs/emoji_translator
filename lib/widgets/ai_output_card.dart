@@ -15,9 +15,9 @@ class AiOutputCard extends StatelessWidget {
 
   void _copyToClipboard(BuildContext context) {
     Clipboard.setData(ClipboardData(text: output));
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Copied to clipboard')),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('Copied to clipboard')));
   }
 
   @override
@@ -32,10 +32,7 @@ class AiOutputCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  modelName,
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
+                Text(modelName, style: Theme.of(context).textTheme.titleMedium),
                 IconButton(
                   icon: const Icon(Icons.star_border),
                   onPressed: onBest,
@@ -45,12 +42,7 @@ class AiOutputCard extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             // Output + Copy button
-            SelectableText(
-              output,
-              style: const TextStyle(
-                fontSize: 16,
-              ),
-            ),
+            SelectableText(output, style: const TextStyle(fontSize: 16)),
             Align(
               alignment: Alignment.topRight,
               child: IconButton(

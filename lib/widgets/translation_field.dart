@@ -28,10 +28,7 @@ class TranslationField extends StatelessWidget {
           value: emojiToText,
           onChanged: onModeToggle,
         ),
-        ElevatedButton(
-          onPressed: onTranslate,
-          child: const Text('Translate'),
-        ),
+        ElevatedButton(onPressed: onTranslate, child: const Text('Translate')),
       ],
     );
   }

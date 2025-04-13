@@ -60,11 +60,16 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(height: 24),
             Expanded(
               child: ListView(
-                children: _translations.entries.map((entry) => AiOutputCard(
-                  modelName: entry.key,
-                  output: entry.value,
-                  onBest: () => voteBest(entry.key),
-                )).toList(),
+                children:
+                    _translations.entries
+                        .map(
+                          (entry) => AiOutputCard(
+                            modelName: entry.key,
+                            output: entry.value,
+                            onBest: () => voteBest(entry.key),
+                          ),
+                        )
+                        .toList(),
               ),
             ),
           ],
