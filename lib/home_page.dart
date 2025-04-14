@@ -7,6 +7,7 @@ import 'services/gemini_service.dart';
 import 'services/grok_service.dart';
 import 'services/deepseek_service.dart';
 import 'services/supabase_service.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
