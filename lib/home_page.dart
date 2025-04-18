@@ -20,6 +20,7 @@ class _HomePageState extends State<HomePage> {
   bool _emojiToText = false;
   Map<String, String> _translations = {};
   bool _isTranslating = false;
+  String? _bestModel;
 
   @override
   void initState() {
@@ -38,6 +39,7 @@ Future<void> _translate() async {
 
   setState(() {
     _isTranslating = true;
+    _bestModel = null;
     _translations = {
       'ChatGPT': '',
       'Gemini': '',
@@ -87,6 +89,10 @@ Future<void> _translate() async {
                   modelName: entry.key,
                   output: entry.value,
                   isLoading: _isTranslating,
+                  isBest: _bestModel == entry.key,
+                  canVote: !_isTranslating &&
+                    entry.value.trim().isNotEmpty &&
+                    _bestModel == null,
                   onBest: () => voteBest(entry.key),
                 )).toList(),
               ),
