@@ -17,33 +17,54 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final TextEditingController _controller = TextEditingController();
-  bool _emojiToText = true;
+  bool _emojiToText = false;
   Map<String, String> _translations = {};
+  bool _isTranslating = false;
 
-  Future<void> _translate() async {
-    final input = _controller.text;
-    if (input.isEmpty) return;
-
-    setState(() => _translations.clear());
-
-    final chatGpt = await translateWithChatGpt(input, _emojiToText);
-    final gemini = await translateWithGemini(input, _emojiToText);
-    final grok = await translateWithGrok(input, _emojiToText);
-    final deepseek = await translateWithDeepSeek(input, _emojiToText);
-
-    setState(() {
-      _translations = {
-        'ChatGPT': chatGpt,
-        'Gemini': gemini,
-        'Grok': grok,
-        'DeepSeek': deepseek,
-      };
-    });
-
-    if ([chatGpt, gemini, grok, deepseek].any((t) => t.trim().isNotEmpty)) {
-      await incrementTranslationCount();
-    }
+  @override
+  void initState() {
+    super.initState();
+    _translations = {
+      'ChatGPT': '',
+      'Gemini': '',
+      'Grok': '',
+      'DeepSeek': '',
+    };
   }
+
+Future<void> _translate() async {
+  final input = _controller.text;
+  if (input.isEmpty) return;
+
+  setState(() {
+    _isTranslating = true;
+    _translations = {
+      'ChatGPT': '',
+      'Gemini': '',
+      'Grok': '',
+      'DeepSeek': '',
+    };
+  });
+
+  final chatGpt = await translateWithChatGpt(input, _emojiToText);
+  final gemini = await translateWithGemini(input, _emojiToText);
+  final grok = await translateWithGrok(input, _emojiToText);
+  final deepseek = await translateWithDeepSeek(input, _emojiToText);
+
+  setState(() {
+    _isTranslating = false; 
+    _translations = {
+      'ChatGPT': chatGpt,
+      'Gemini': gemini,
+      'Grok': grok,
+      'DeepSeek': deepseek,
+    };
+  });
+
+  if ([chatGpt, gemini, grok, deepseek].any((t) => t.trim().isNotEmpty)) {
+    await incrementTranslationCount();
+  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -65,6 +86,7 @@ class _HomePageState extends State<HomePage> {
                 children: _translations.entries.map((entry) => AiOutputCard(
                   modelName: entry.key,
                   output: entry.value,
+                  isLoading: _isTranslating,
                   onBest: () => voteBest(entry.key),
                 )).toList(),
               ),
